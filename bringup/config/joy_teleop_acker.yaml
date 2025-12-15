@@ -1,17 +1,3 @@
-teleop_twist_joy_node:
-  ros__parameters:
-    axis_linear:  # Forward/Back
-      x: 1
-    scale_linear:
-      x: 0.7
-
-    axis_angular:  # Left/Right
-      yaw: 0
-    scale_angular:
-      yaw: 0.4
-
-    enable_button: 0  # Trigger
-
 teleop_acker_joy_node:
   ros__parameters:
     axis.linear: 1
@@ -38,6 +24,6 @@ teleop_acker_joy_node:
     #scale_turbo.steering_angle_fine: -0.1
 
     enable_button: 0
-    enable_turbo_button: -1
+    enable_turbo_button: 1
 
     failsafe_delay_ms: 100

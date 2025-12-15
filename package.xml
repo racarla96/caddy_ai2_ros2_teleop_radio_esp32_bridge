@@ -1,13 +1,18 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>joystick_bridge</name>
+  <name>caddy_ai2_ros2_teleop_radio_esp32_bridge</name>
   <version>1.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Teleoperation bridge for Caddy AI2 using ROS2 and ESP32</description>
   <maintainer email="racarla96@gmail.com">racarla96</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>ackermann_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

@@ -13,34 +13,43 @@ def generate_launch_description():
     joy_config = launch.substitutions.LaunchConfiguration('joy_config')
     config_filepath = launch.substitutions.LaunchConfiguration('config_filepath')
 
-    joy_launch_file_dir = os.path.join(get_package_share_directory('joystick_bridge'), 'launch')
+    joy_launch_file_dir = os.path.join(get_package_share_directory('caddy_ai2_ros2_teleop_radio_esp32_bridge'), 'launch')
 
     usb_device_dir = LaunchConfiguration('usb_device', default='/dev/ttyUSB0')
+    ros_distro_dir = LaunchConfiguration('ros_distro', default=os.environ.get('ROS_DISTRO', 'jazzy'))
 
     return launch.LaunchDescription([
         launch.actions.DeclareLaunchArgument('joy_vel', default_value='cmd_vel'), 
-        launch.actions.DeclareLaunchArgument('joy_config', default_value='joy_teleop'),       
+        launch.actions.DeclareLaunchArgument('joy_config', default_value='joy_teleop_twist'),       
         launch.actions.DeclareLaunchArgument('config_filepath', default_value=[
             launch.substitutions.TextSubstitution(text=os.path.join(
-                get_package_share_directory('joystick_bridge'), 'config', '')),
+                get_package_share_directory('caddy_ai2_ros2_teleop_radio_esp32_bridge'), 'config', '')),
             joy_config, launch.substitutions.TextSubstitution(text='.yaml')]),
 
         DeclareLaunchArgument(
             'usb_device',
             default_value=usb_device_dir,
-            description='Full path to map file to load'),
+            description='USB device for micro-ROS agent'),
 
+        DeclareLaunchArgument(
+            'ros_distro',
+            default_value=ros_distro_dir,
+            description='ROS 2 distribution'),
+
+        # Incluir el joy_bridge.launch.py que lanza el Docker con micro-ROS
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([joy_launch_file_dir, '/joy_launch.py']),
+            PythonLaunchDescriptionSource([joy_launch_file_dir, '/joy_bridge.launch.py']),
             launch_arguments={
-                'usb_device': usb_device_dir}.items(),
+                'usb_device': usb_device_dir,
+                'ros_distro': ros_distro_dir
+            }.items(),
         ),
 
-
+        # Usar el nodo estándar de teleop_twist_joy
         launch_ros.actions.Node(
-            package='teleop_acker_joy', executable='teleop_node',
-            name='teleop_acker_joy_node',
+            package='teleop_twist_joy', 
+            executable='teleop_node',
+            name='teleop_twist_joy_node',
             parameters=[config_filepath],
-            remappings={('/cmd_vel', launch.substitutions.LaunchConfiguration('joy_vel'))},
-            ),
+        ),
     ])

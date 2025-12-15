@@ -1,0 +1,7 @@
+ackermann_to_topics_node:
+  ros__parameters:
+    input_topic: "ackermann_cmd"
+    steering_topic: "steering_angle"
+    velocity_topic: "velocity"
+    max_steering_angle: 0.52  # ~30 grados en radianes
+    max_velocity: 2.0  # m/s
