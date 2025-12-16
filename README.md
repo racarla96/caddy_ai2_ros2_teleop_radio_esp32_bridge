@@ -14,7 +14,7 @@ Puente de comunicación entre una radio RC y ROS 2 (Jazzy) utilizando micro-ROS 
 - ✅ 6 ejes (canales) de la radio RC
 - ✅ Detección de estado de conexión mediante el estado de un botón
 - ✅ Frecuencia de operación: 50 Hz
-- ✅ Soporte para teleoperación Twist y Ackermann
+- ✅ Soporte para teleoperación Twist y TwistStamped
 - ✅ Lanzamiento automático del agente micro-ROS mediante Docker
 
 ## 🎮 Mapeo de Canales
