@@ -1,7 +1,4 @@
-Aquí te propongo una versión mejorada del README con mejor estructura, más información y claridad:
-
-```markdown
-# ros2_caddy_ai2_joystick_esp32_radio_bridge
+# Caddy AI2 ROS2 Teleop Radio esp32 Bridge
 
 [![ROS 2](https://img.shields.io/badge/ROS%202-Jazzy-blue)](https://docs.ros.org/en/jazzy/index.html)
 [![Platform](https://img.shields.io/badge/Platform-ESP32-green)](https://www.espressif.com/en/products/socs/esp32)
@@ -35,12 +32,18 @@ Puente de comunicación entre una radio RC y ROS 2 (Jazzy) utilizando micro-ROS 
 
 > ⚠️ **Nota**: Cuando se apaga el canal 3, automáticamente baja a 0.
 
+
+| Botón | Función típica         | Valores    |
+|-------|------------------------|------------|
+| 0     | Enlace radio conectado | {0.0, 1.0} |
+| 1     | CH5 > 1500, modo turbo | {0.0, 1.0} |
+
 ## 🖥️ Requisitos del Sistema
 
 - **OS**: Ubuntu 24.04 LTS (o compatible)
 - **ROS 2**: Jazzy Jalisco
 - **Hardware**: ESP32 + Radio RC de 6 canales
-- **Software**: Docker, PlatformIO
+- **Software**: Docker, PlatformIO (desarrollo)
 
 ## 📦 Instalación
 
@@ -140,11 +143,9 @@ docker run -it --rm -v /dev:/dev -v /dev/shm:/dev/shm --privileged --net=host mi
 ros2_caddy_ai2_joystick_esp32_radio_bridge/
 ├── bringup/
 │   ├── config/                    # Archivos de configuración
-│   │   ├── joy_teleop_acker.yaml
 │   │   └── joy_teleop_twist.yaml
 │   └── launch/                    # Launch files
 │       ├── joy_bridge.launch.py
-│       ├── joy_teleop_acker.launch.py
 │       └── joy_teleop_twist.launch.py
 ├── Platformio/
 │   └── joy/                       # Código del ESP32
@@ -167,56 +168,48 @@ Edita los archivos en `bringup/config/`:
 ```yaml
 teleop_twist_joy_node:
   ros__parameters:
+  
+    # ————— Botones de activación —————
+    require_enable_button: true      # Si requiere botón de habilitación para moverse
+    enable_button: 0                 # Índice de botón para movimiento normal
+    enable_turbo_button: 1          # Índice de botón para turbo (desactivado si -1)
+
+    # ————— Ejes lineales —————
     axis_linear:
-      x: 1
-    axis_angular:
-      yaw: 0
+      x: 1                          # Eje del joystick para avance/retroceso
+
+    # Escalas de velocidad lineal
     scale_linear:
+      x: 0.7
+
+    # Escalas de velocidad lineal en turbo
+    scale_linear_turbo:
       x: 1.0
+
+    # ————— Ejes angulares —————
+    axis_angular:
+      yaw: 0                        # Eje para rotación Yaw (giro)
+
+    # Escalas de velocidad angular
     scale_angular:
-      yaw: 1.0
-```
+      yaw: 0.2
 
-**Para Ackermann** (`joy_teleop_acker.yaml`):
-```yaml
-teleop_acker_joy_node:
-  ros__parameters:
-    axis_throttle: 1
-    axis_steering: 0
-    scale_throttle: 1.0
-    scale_steering: 1.0
-```
+    # Escalas de velocidad angular en turbo
+    scale_angular_turbo:
+      yaw: 0.4
 
-## 🎯 Conversión a Topics Individuales
+    # ————— Comportamiento extra —————
+    inverted_reverse: false          # Invierte giro cuando se va en reversa
 
-El paquete incluye un nodo para convertir comandos Ackermann a topics separados:
-
-### Lanzar con conversión automática
-
-```bash
-ros2 launch ros2_caddy_ai2_joystick_esp32_radio_bridge joy_teleop_acker_full.launch.py
-```
-
-Esto publicará en:
-- `/steering_angle` (std_msgs/Float64) - Ángulo de dirección en radianes
-- `/velocity` (std_msgs/Float64) - Velocidad en m/s
-
-### Configuración
-
-Edita `bringup/config/ackermann_to_topics.yaml`:
-
-```yaml
-ackermann_to_topics_node:
-  ros__parameters:
-    max_steering_angle: 0.52  # ~30 grados
-    max_velocity: 2.0  # m/s
+    # ————— Publicación de tipo de mensaje —————
+    publish_stamped_twist: true      # Publica `TwistStamped` en vez de `Twist`
+    frame: ""               # `frame_id` usado en el header de TwistStamped
 ```
 
 ### Diagrama de flujo
 
 ```
-Radio RC → ESP32 → /joy → teleop_acker_joy_node → /ackermann_cmd → ackermann_to_topics_node → /steering_angle
-                                                                                              → /velocity
+Radio RC → ESP32 → /joy → teleop_twist_joy_node → /bicycle_steering_controller/reference
 ```
 
 ## 🐛 Solución de Problemas
@@ -232,6 +225,8 @@ Radio RC → ESP32 → /joy → teleop_acker_joy_node → /ackermann_cmd → ack
    ```bash
    sudo chmod 666 /dev/ttyUSB0
    ```
+
+(*) Aunque con los permisos de dialout debería ser suficiente
 
 3. Reinicia el ESP32
 
@@ -281,52 +276,37 @@ docker pull microros/micro-ros-agent:jazzy
 - [micro_ros_arduino](https://github.com/micro-ROS/micro_ros_arduino)
 - [micro-ROS Examples](https://github.com/micro-ROS/micro_ros_arduino/tree/jazzy/examples)
 
-## 🤝 Contribuciones
+## 👥 Autores
 
-Las contribuciones son bienvenidas. Por favor:
+- **Desarrollador Principal**: Rafael Carbonell Lázaro (racarla96)
+- **Proyecto**: Caddy AI2 - Proyecto CERVAREC
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+## 📄 Licencia
 
-## 📝 Licencia
+Copyright (c) 2025, Rafael Carbonell Lázaro (racarla96)
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Este proyecto se distribuye bajo la licencia **Creative Commons Attribution 4.0 International (CC BY 4.0)**.
 
-## ✅ Roadmap
+### En resumen:
 
-- [x] Crear un launch para lanzar el comando de docker directamente
-- [x] Integrar teleoperación Twist
-- [x] Integrar teleoperación Ackermann
-- [ ] Añadir soporte para más tipos de radios
-- [ ] Implementar calibración automática
-- [ ] Añadir interfaz web de configuración
-- [ ] Soporte para múltiples ESP32 simultáneos
+✅ **Puedes:**
+- Usar, modificar y redistribuir la librería
+- Utilizarla en proyectos comerciales o privados
+- Crear trabajos derivados
 
-## 👤 Autor
+⚠️ **Debes:**
+- Mantener atribución al autor/proyecto (en documentación, créditos, "About" de la aplicación, etc.)
+- Indicar si se realizaron cambios
+- Proporcionar un enlace a la licencia
 
-[Tu nombre/organización]
+❌ **No puedes:**
+- Imponer restricciones adicionales que impidan a otros ejercer los permisos que otorga la licencia
 
-## 🙏 Agradecimientos
+### Texto legal completo:
+https://creativecommons.org/licenses/by/4.0/legalcode
 
-- Equipo de micro-ROS
-- Comunidad de ROS 2
-- Desarrolladores de PlatformIO
-```
+### Atribución sugerida:
 
-### Principales mejoras:
-
-1. **✨ Badges** al inicio para mostrar tecnologías
-2. **📋 Mejor estructura** con emojis para navegación visual
-3. **📊 Tabla de mapeo** de canales más clara
-4. **🚀 Sección de uso** más detallada con múltiples opciones
-5. **🔧 Configuración** con ejemplos de YAML
-6. **🐛 Troubleshooting** con soluciones comunes
-7. **📸 Galería** de imágenes organizada
-8. **✅ Roadmap** actualizado con tareas completadas
-9. **🤝 Sección de contribuciones**
-10. **📚 Referencias** mejor organizadas
-
-¿Te gustaría que ajuste alguna sección en particular?
+Este proyecto utiliza " caddy_ai2_ros2_teleop_radio_esp32_bridge"
+desarrollado por Rafael Carbonell Lázaro (racarla96)
+Licencia: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
