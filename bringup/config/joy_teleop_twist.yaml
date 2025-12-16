@@ -1,13 +1,38 @@
 teleop_twist_joy_node:
   ros__parameters:
-    axis_linear:  # Forward/Back
-      x: 1
+  
+    # ————— Botones de activación —————
+    require_enable_button: true      # Si requiere botón de habilitación para moverse
+    enable_button: 0                 # Índice de botón para movimiento normal
+    enable_turbo_button: 1          # Índice de botón para turbo (desactivado si -1)
+
+    # ————— Ejes lineales —————
+    axis_linear:
+      x: 1                          # Eje del joystick para avance/retroceso
+
+    # Escalas de velocidad lineal
     scale_linear:
       x: 0.7
 
-    axis_angular:  # Left/Right
-      yaw: 0
+    # Escalas de velocidad lineal en turbo
+    scale_linear_turbo:
+      x: 1.0
+
+    # ————— Ejes angulares —————
+    axis_angular:
+      yaw: 0                        # Eje para rotación Yaw (giro)
+
+    # Escalas de velocidad angular
     scale_angular:
       yaw: 0.4
 
-    enable_button: 0  # Trigger
+    # Escalas de velocidad angular en turbo
+    scale_angular_turbo:
+      yaw: 0.8
+
+    # ————— Comportamiento extra —————
+    inverted_reverse: false          # Invierte giro cuando se va en reversa
+
+    # ————— Publicación de tipo de mensaje —————
+    publish_stamped_twist: true      # Publica `TwistStamped` en vez de `Twist`
+    frame: "base_link"               # `frame_id` usado en el header de TwistStamped

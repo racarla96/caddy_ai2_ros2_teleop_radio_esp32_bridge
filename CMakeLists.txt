@@ -8,44 +8,38 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ackermann_msgs REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
+#find_package(ackermann_msgs REQUIRED)
+#find_package(std_msgs REQUIRED)
+#find_package(geometry_msgs REQUIRED)
 
 # Añadir el ejecutable
-add_executable(ackermann_to_topics_node src/ackermann_to_topics_node.cpp)
-add_executable(twist_to_topics_node src/twist_to_topics_node.cpp)
+#add_executable(ackermann_to_topics_node src/ackermann_to_topics_node.cpp)
+#add_executable(twist_to_topics_node src/twist_to_topics_node.cpp)
 
 # Añadir dependencias al ejecutable
-ament_target_dependencies(ackermann_to_topics_node 
-  rclcpp 
-  ackermann_msgs 
-  std_msgs
-)
+#ament_target_dependencies(ackermann_to_topics_node 
+#  rclcpp 
+#  ackermann_msgs 
+#  std_msgs
+#)
 
-ament_target_dependencies(twist_to_topics_node 
-  rclcpp 
-  geometry_msgs 
-  std_msgs
-)
+#ament_target_dependencies(twist_to_topics_node 
+#  rclcpp 
+#  geometry_msgs 
+#  std_msgs
+#)
 
 # Instalar el ejecutable
-install(TARGETS
-  ackermann_to_topics_node
-  twist_to_topics_node
-  DESTINATION lib/${PROJECT_NAME}
-)
+#install(TARGETS
+  #ackermann_to_topics_node
+  #twist_to_topics_node
+  #DESTINATION lib/${PROJECT_NAME}
+#)
 
 # Instalar directorios de launch y config
 install(DIRECTORY
   bringup/launch
   bringup/config
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-# Instalar directorio de imágenes (opcional)
-install(DIRECTORY
-  img
   DESTINATION share/${PROJECT_NAME}/
 )
 
