@@ -1,4 +1,4 @@
-# Caddy AI2 ROS2 Teleop Radio esp32 Bridge
+# Caddy AI2 ROS2 Teleop Radio ESP32 Bridge
 
 [![ROS 2](https://img.shields.io/badge/ROS%202-Jazzy-blue)](https://docs.ros.org/en/jazzy/index.html)
 [![Platform](https://img.shields.io/badge/Platform-ESP32-green)](https://www.espressif.com/en/products/socs/esp32)
