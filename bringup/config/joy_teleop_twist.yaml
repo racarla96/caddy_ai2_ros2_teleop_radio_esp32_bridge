@@ -24,15 +24,15 @@ teleop_twist_joy_node:
 
     # Escalas de velocidad angular
     scale_angular:
-      yaw: 0.4
+      yaw: 0.2
 
     # Escalas de velocidad angular en turbo
     scale_angular_turbo:
-      yaw: 0.8
+      yaw: 0.4
 
     # ————— Comportamiento extra —————
     inverted_reverse: false          # Invierte giro cuando se va en reversa
 
     # ————— Publicación de tipo de mensaje —————
     publish_stamped_twist: true      # Publica `TwistStamped` en vez de `Twist`
-    frame: "base_link"               # `frame_id` usado en el header de TwistStamped
+    frame: ""               # `frame_id` usado en el header de TwistStamped

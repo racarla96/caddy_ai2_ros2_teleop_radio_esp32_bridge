@@ -102,24 +102,18 @@ Busca algo como `/dev/ttyUSB0` o `/dev/ttyACM0`.
 ### Opción 1: Lanzar solo el puente micro-ROS
 
 ```bash
-ros2 launch ros2_caddy_ai2_joystick_esp32_radio_bridge joy_bridge.launch.py
+ros2 launch caddy_ai2_ros2_teleop_radio_esp32_bridge joy_bridge.launch.py
 ```
 
 Con puerto personalizado:
 ```bash
-ros2 launch ros2_caddy_ai2_joystick_esp32_radio_bridge joy_bridge.launch.py usb_device:=/dev/ttyUSB1
+ros2 launch caddy_ai2_ros2_teleop_radio_esp32_bridge joy_bridge.launch.py usb_device:=/dev/ttyUSB1
 ```
 
 ### Opción 2: Lanzar con teleoperación Twist
 
 ```bash
-ros2 launch ros2_caddy_ai2_joystick_esp32_radio_bridge joy_teleop_twist.launch.py
-```
-
-### Opción 3: Lanzar con teleoperación Ackermann
-
-```bash
-ros2 launch ros2_caddy_ai2_joystick_esp32_radio_bridge joy_teleop_acker.launch.py
+ros2 launch caddy_ai2_ros2_teleop_radio_esp32_bridge joy_teleop_twist.launch.py
 ```
 
 ### Verificar funcionamiento
@@ -129,7 +123,7 @@ ros2 launch ros2_caddy_ai2_joystick_esp32_radio_bridge joy_teleop_acker.launch.p
 ros2 topic echo /joy
 
 # Ver comandos de velocidad
-ros2 topic echo /cmd_vel
+ros2 topic echo /bicycle_steering_controller/reference
 ```
 
 ### Modo manual (sin launch files)
