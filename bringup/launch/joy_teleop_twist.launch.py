@@ -13,8 +13,8 @@ def generate_launch_description():
     joy_config = launch.substitutions.LaunchConfiguration('joy_config')
     config_filepath = launch.substitutions.LaunchConfiguration('config_filepath')
 
-    joy_launch_file_dir = os.path.join(get_package_share_directory('caddy_ai2_ros2_teleop_radio_esp32_bridge'), 'launch')
-
+    joy_launch_file_dir = os.path.join(get_package_share_directory('caddy_ai2_ros2_teleop_radio_esp32_bridge'), 'bringup', 'launch')
+ 
     usb_device_dir = LaunchConfiguration('usb_device', default='/dev/ttyUSB1')
     ros_distro_dir = LaunchConfiguration('ros_distro', default=os.environ.get('ROS_DISTRO', 'jazzy'))
 
