@@ -37,9 +37,7 @@ find_package(rclcpp REQUIRED)
 #)
 
 # Instalar directorios de launch y config
-install(DIRECTORY
-  bringup/launch
-  bringup/config
+install(DIRECTORY bringup
   DESTINATION share/${PROJECT_NAME}/
 )
 
