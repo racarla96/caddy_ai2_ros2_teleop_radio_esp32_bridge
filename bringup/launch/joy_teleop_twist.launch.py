@@ -23,7 +23,7 @@ def generate_launch_description():
         launch.actions.DeclareLaunchArgument('joy_config', default_value='joy_teleop_twist'),       
         launch.actions.DeclareLaunchArgument('config_filepath', default_value=[
             launch.substitutions.TextSubstitution(text=os.path.join(
-                get_package_share_directory('caddy_ai2_ros2_teleop_radio_esp32_bridge'), 'config', '')),
+                get_package_share_directory('caddy_ai2_ros2_teleop_radio_esp32_bridge'), 'bringup', 'config', '')),
             joy_config, launch.substitutions.TextSubstitution(text='.yaml')]),
 
         DeclareLaunchArgument(
